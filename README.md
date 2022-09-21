@@ -1,1 +1,1 @@
-# kuber-homewoprks
+# Домашние задания к блокам по Kubernetes
