@@ -1,0 +1,58 @@
+@startuml pods-and-svc
+
+footer 12.2
+scale max 1024 width
+
+skinparam nodesep 20
+skinparam ranksep 60
+
+!define KubernetesPuml https://raw.githubusercontent.com/dcasati/kubernetes-PlantUML/master/dist
+
+!includeurl KubernetesPuml/kubernetes_Common.puml
+!includeurl KubernetesPuml/kubernetes_Context.puml
+!includeurl KubernetesPuml/kubernetes_Simplified.puml
+
+!includeurl KubernetesPuml/OSS/KubernetesPod.puml
+!includeurl KubernetesPuml/OSS/KubernetesDeploy.puml
+!includeurl KubernetesPuml/OSS/KubernetesSvc.puml
+!includeurl KubernetesPuml/OSS/KubernetesEp.puml
+
+left to right direction
+
+Cluster_Boundary(cluster, "Kubernetes Cluster") {
+    KubernetesEp(ep_1, "endpoints\n10.244.1.11\n10.244.1.12\n10.244.1.13", "")
+    KubernetesPod(pod_1, "pod-1\n10.244.1.11", "")
+    KubernetesPod(pod_2, "pod-2\n10.244.2.12", "")
+    KubernetesPod(pod_3, "pod-3\n10.244.3.13", "")
+    KubernetesSvc(svc_main, "service\nmain\n10.128.1.10", "")
+
+note left
+<code>
+$ kubectl describe svc main
+Name:                  main
+Namespace:             default
+Labels:                <none>
+Annotations:           <none>
+Selector:              app=myapp
+Type:                  ClusterIP
+IP Family Policy:      SingleStack
+IP Families:           IPv4
+IP:                    10.128.1.10
+IPs:                   10.128.1.10
+LoadBalancer Ingress:  localhost
+Port:                  <unset>  80/TCP
+TargetPort:            http/TCP
+Endpoints:             10.244.1.11:8888,110.244.1.12:8888,10.244.1.13:8888
+Session Affinity:      None
+Events:                <none>
+</code>
+end note
+
+    svc_main -d-> ep_1
+    ep_1 --> pod_1
+    ep_1 --> pod_2
+    ep_1 --> pod_3
+}
+
+
+@enduml

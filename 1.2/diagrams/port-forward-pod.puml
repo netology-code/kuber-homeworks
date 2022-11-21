@@ -1,0 +1,51 @@
+@startuml port-forward-pod
+
+footer 12.2
+scale max 1024 width
+
+skinparam nodesep 20
+skinparam ranksep 40
+
+!define KubernetesPuml https://raw.githubusercontent.com/dcasati/kubernetes-PlantUML/master/dist
+
+!includeurl KubernetesPuml/kubernetes_Common.puml
+!includeurl KubernetesPuml/kubernetes_Context.puml
+!includeurl KubernetesPuml/kubernetes_Simplified.puml
+
+!includeurl KubernetesPuml/OSS/KubernetesPod.puml
+!includeurl KubernetesPuml/OSS/KubernetesSvc.puml
+!includeurl KubernetesPuml/OSS/KubernetesEp.puml
+
+left to right direction
+Actor User
+
+Cluster_Boundary(cluster, "Kubernetes Cluster") {
+    KubernetesEp(ep_1, "endpoints\n10.244.1.11", "")
+    KubernetesPod(pod_1, "pod-1\n10.244.1.11", "")
+    KubernetesSvc(svc_main, "service\nmain\n10.128.1.10", "")
+
+    svc_main -d-> ep_1
+    ep_1 --> pod_1
+}
+
+User -[thickness=4,#green]-> pod_1
+note left
+    <code>
+    $ kubectl port-forward pod-1 :80
+    Forwarding from 127.0.0.1:54254 -> 80
+    Forwarding from [::1]:54254 -> 80
+
+    </code>
+end note
+
+User -[thickness=4,#blue]u-> svc_main
+note right
+    <code>
+    $ kubectl port-forward svc/main 30080:80
+    Forwarding from 127.0.0.1:30080 -> 80
+    Forwarding from [::1]:30080 -> 80
+
+    </code>
+end note
+
+@enduml
