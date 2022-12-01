@@ -20,25 +20,14 @@ left to right direction
 
 Cluster_Boundary(cluster, "Kubernetes Cluster") {
 
-  Service_Boundary(v2, "v2") #LightGreen {
-    KubernetesRs(rs2, "rs-2", "")
-    KubernetesPod(pod3, "pod-3", "")
-    KubernetesPod(pod4, "pod-4", "")
-  }
-
-  KubernetesDeploy(deploy, "deployment", "")
-  Service_Boundary(v1, "v1") #LightBlue {
-    KubernetesRs(rs1, "rs-1", "")
-    KubernetesPod(pod1, "pod-1", "")
-    KubernetesPod(pod2, "pod-2", "")
-  }
+  KubernetesDeploy(deploy, "Deployment", "")
+  KubernetesRs(rs1, "ReplicaSet", "")
+  KubernetesPod(pod1, "pod-1", "")
+  KubernetesPod(pod2, "pod-2", "")
 
   deploy -d-> rs1
-  deploy -d-> rs2
   rs1 -d-> pod1
   rs1 -d-> pod2
-  rs2 -d-> pod3
-  rs2 -d-> pod4
 }
 
 
