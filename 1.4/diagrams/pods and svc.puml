@@ -1,0 +1,35 @@
+@startuml pods-and-svc
+
+footer 12.4
+scale max 1024 width
+
+skinparam nodesep 20
+skinparam ranksep 60
+
+!define KubernetesPuml https://raw.githubusercontent.com/dcasati/kubernetes-PlantUML/master/dist
+
+!includeurl KubernetesPuml/kubernetes_Common.puml
+!includeurl KubernetesPuml/kubernetes_Context.puml
+!includeurl KubernetesPuml/kubernetes_Simplified.puml
+
+!includeurl KubernetesPuml/OSS/KubernetesPod.puml
+!includeurl KubernetesPuml/OSS/KubernetesDeploy.puml
+!includeurl KubernetesPuml/OSS/KubernetesSvc.puml
+!includeurl KubernetesPuml/OSS/KubernetesEp.puml
+
+left to right direction
+
+Cluster_Boundary(cluster, "Kubernetes Cluster") {
+    KubernetesPod(pod_1, "pod-1\n10.244.1.11", "")
+    KubernetesPod(pod_2, "pod-2\n10.244.2.12", "")
+    KubernetesPod(pod_3, "pod-3\n10.244.3.13", "")
+    KubernetesSvc(svc_main, "service\nmain\n10.128.1.10", "")
+
+    svc_main --> pod_1
+    svc_main --> pod_2
+    svc_main --> pod_3
+Client -[thickness=4,#green]-> svc_main: Трафик
+}
+
+
+@enduml

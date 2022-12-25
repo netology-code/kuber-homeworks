@@ -1,0 +1,29 @@
+@startuml
+
+skinparam responseMessageBelowArrow true
+actor "MSO" as man
+
+collections "scripts repo" as mso_git
+participant "DOB" as dob
+database "Obf DB" as target_db
+database "src DB" as src_db
+
+autonumber
+man -> mso_git: create scripts
+man -> dob: configure params
+dob -> mso_git: take scripts
+dob -> target_db: run scripts with params
+target_db -[#blue]> src_db: import db DBMS_DATAPUMP
+src_db -[#blue]> target_db: import DB
+note over target_db: imported Schema\nschema_username
+
+group obfuscation framework
+    dob -> target_db: Run obfuscation scripts
+    note right: obfuscated Schema\nschema_username
+    target_db -[#blue]>o target_db: Create dump
+    note over target_db: dump file\n obfuscated Schema
+end
+
+
+
+@enduml

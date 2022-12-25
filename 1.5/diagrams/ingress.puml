@@ -1,0 +1,40 @@
+@startuml pod-to-pod
+
+footer 12.5
+scale max 1024 width
+
+skinparam nodesep 10
+skinparam ranksep 40
+
+!define KubernetesPuml https://raw.githubusercontent.com/dcasati/kubernetes-PlantUML/master/dist
+
+!includeurl KubernetesPuml/kubernetes_Common.puml
+!includeurl KubernetesPuml/kubernetes_Context.puml
+!includeurl KubernetesPuml/kubernetes_Simplified.puml
+
+!includeurl KubernetesPuml/OSS/KubernetesPod.puml
+!includeurl KubernetesPuml/OSS/KubernetesSvc.puml
+!includeurl KubernetesPuml/OSS/KubernetesIng.puml
+
+left to right direction
+actor User as user
+Cluster_Boundary(cluster, "Kubernetes Cluster"){
+    KubernetesPod(pod_1, "pod_fe-1", "")
+    KubernetesPod(pod_2, "pod_fe-2", "")
+    KubernetesPod(pod_11, "pod_api-1", "")
+    KubernetesPod(pod_21, "pod_api2", "")
+    KubernetesSvc(svc_1, "Service\nFrontend", "")
+    KubernetesSvc(svc_2, "Service\nAPI", "")
+    KubernetesIng(ing, "Ingress", "")
+
+    ing -[#green]-> svc_1
+    ing -[#red]-> svc_2
+    svc_1 -[#green]-> pod_1
+    svc_1 -[#green]-> pod_2
+    svc_2 -[#red]-> pod_11
+    svc_2 -[#red]-> pod_21
+}
+
+user -[thickness=4,#green]-> ing: http://example.com
+user -[thickness=4,#red]-> ing: http://example.com/api
+@enduml

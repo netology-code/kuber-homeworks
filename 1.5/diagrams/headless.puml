@@ -1,0 +1,29 @@
+@startuml pod-to-pod
+
+footer 12.4
+scale max 1024 width
+
+skinparam nodesep 10
+skinparam ranksep 40
+
+!define KubernetesPuml https://raw.githubusercontent.com/dcasati/kubernetes-PlantUML/master/dist
+
+!includeurl KubernetesPuml/kubernetes_Common.puml
+!includeurl KubernetesPuml/kubernetes_Context.puml
+!includeurl KubernetesPuml/kubernetes_Simplified.puml
+
+!includeurl KubernetesPuml/OSS/KubernetesPod.puml
+!includeurl KubernetesPuml/OSS/KubernetesDeploy.puml
+!includeurl KubernetesPuml/OSS/KubernetesSvc.puml
+
+left to right direction
+Cluster_Boundary(cluster, "Kubernetes Cluster"){
+    KubernetesPod(pod_main_1, "pod-main\n10.244.1.11", "")
+    KubernetesPod(pod_1, "pod-1\n10.244.1.11", "")
+    KubernetesSvc(svc_main, "app-svc\nClusterIP:None", "")
+
+    pod_main_1 --> svc_main
+    svc_main --> pod_1
+}
+    svc_main . (nslookup\napp-svc:10.244.1.11)
+@enduml

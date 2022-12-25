@@ -1,0 +1,32 @@
+@startuml pod-to-pod
+
+footer 12.4
+scale max 1024 width
+
+skinparam nodesep 10
+skinparam ranksep 40
+
+!define KubernetesPuml https://raw.githubusercontent.com/dcasati/kubernetes-PlantUML/master/dist
+!define AzurePuml https://raw.githubusercontent.com/plantuml-stdlib/Azure-PlantUML/master/dist
+
+!includeurl KubernetesPuml/kubernetes_Common.puml
+!includeurl KubernetesPuml/kubernetes_Context.puml
+!includeurl KubernetesPuml/kubernetes_Simplified.puml
+!includeurl KubernetesPuml/OSS/KubernetesEp.puml
+!includeurl KubernetesPuml/OSS/KubernetesPod.puml
+!includeurl KubernetesPuml/OSS/KubernetesSvc.puml
+
+left to right direction
+Cluster_Boundary(cluster, "Kubernetes Cluster"){
+    KubernetesPod(pod_main_1, "pod-1\n10.244.1.11", "")
+    KubernetesPod(pod_main_2, "pod-2\n10.104.100.21", "")
+    KubernetesSvc(svc_main, "ClusterIP\n\n10.128.1.10", "")
+    KubernetesPod(pod_dest, "pod-App\n10.128.0.21\nApplication\nSidecar", "")
+
+}
+pod_main_1 -[#red]-> svc_main: App:80
+pod_main_2 -[#green]-> svc_main: Sidecar:9216
+svc_main -[#red]--> pod_dest: App:80
+svc_main -[#green]--> pod_dest: Sidecar:9216
+
+@enduml
