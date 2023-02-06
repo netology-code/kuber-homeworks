@@ -1,0 +1,36 @@
+@startuml deployment
+
+footer 13.2
+scale max 1024 width
+
+skinparam nodesep 10
+skinparam ranksep 40
+
+!define KubernetesPuml https://raw.githubusercontent.com/dcasati/kubernetes-PlantUML/master/dist
+
+!includeurl KubernetesPuml/kubernetes_Common.puml
+!includeurl KubernetesPuml/kubernetes_Context.puml
+!includeurl KubernetesPuml/kubernetes_Simplified.puml
+
+!includeurl KubernetesPuml/OSS/KubernetesPod.puml
+!includeurl KubernetesPuml/OSS/KubernetesPv.puml
+
+left to right direction
+
+Cluster_Boundary(cluster, "Kubernetes Cluster") {
+  KubernetesPv(pv, "Persistent Volume", " ")
+
+  Namespace_Boundary(ns1, "Namespace1") {
+    KubernetesPod(pod1, "pod-1", "")
+    }
+  Namespace_Boundary(ns2, "Namespace2") {
+    KubernetesPod(pod2, "pod-2", "")
+    }
+
+  pv -u-> pod2
+  pv -u-> pod1
+
+}
+
+
+@enduml
