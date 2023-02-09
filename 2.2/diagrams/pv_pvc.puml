@@ -14,28 +14,25 @@ skinparam ranksep 40
 
 !includeurl KubernetesPuml/OSS/KubernetesPod.puml
 !includeurl KubernetesPuml/OSS/KubernetesPv.puml
+!includeurl KubernetesPuml/OSS/KubernetesPvc.puml
 
 left to right direction
-
 Cluster_Boundary(cluster, "Kubernetes Cluster") {
-  KubernetesPv(pv, "Persistent Volume", " ")
-  Node_Boundary(node1, "Node1") {
-    Namespace_Boundary(ns1, "NS1") {
-        KubernetesPod(pod1, "pod-1", "")
-    }
-  }
-  Node_Boundary(node2, "Node2") {
-    Namespace_Boundary(ns2, "NS2") {
-        KubernetesPod(pod2, "pod-2", "")
-    }
-    Namespace_Boundary(ns1, "NS1") {
-        KubernetesPod(pod3, "pod-3", "")
-    }
- }
-  pv -u-> pod2
-  pv -u-> pod1
+  KubernetesPv(pv1, "PV1\n1GB:RWO", "")
+  KubernetesPv(pv2, "PV2\n1GB:RWX", "")
+  KubernetesPv(pv3, "PV3\n10GB:RWOP", "")
 
+  Namespace_Boundary(ns1, "Namespace1") {
+    KubernetesPod(pod1, "pod", "")
+    KubernetesPvc(pvc1, "PVC\n1GB:RWO", "")
+    }
+
+  pod1 --> pvc1
+  pvc1 --> pv1
+  pvc1 -[#white]- pv2
+  pvc1 -[#white]- pv3
 }
 
+@enduml
 
 @enduml

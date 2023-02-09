@@ -1,0 +1,49 @@
+@startuml deployment
+
+footer 13.2
+scale max 1024 width
+
+skinparam nodesep 10
+skinparam ranksep 40
+
+!define KubernetesPuml https://raw.githubusercontent.com/dcasati/kubernetes-PlantUML/master/dist
+
+!includeurl KubernetesPuml/kubernetes_Common.puml
+!includeurl KubernetesPuml/kubernetes_Context.puml
+!includeurl KubernetesPuml/kubernetes_Simplified.puml
+
+!includeurl KubernetesPuml/OSS/KubernetesPod.puml
+!includeurl KubernetesPuml/OSS/KubernetesPv.puml
+!includeurl KubernetesPuml/OSS/KubernetesPvc.puml
+!includeurl KubernetesPuml/OSS/KubernetesSc.puml
+
+left to right direction
+Actor SysOps as admin
+Actor Developer as prog
+
+Cluster_Boundary(cluster, "Kubernetes Cluster") {
+  KubernetesPv(pv1, "PV-1\n1Gb", "")
+  KubernetesPv(pv2, "PV-5\n5Gb", "")
+  KubernetesSc(sc1, "Storage Class\nNFS", "")
+
+  Namespace_Boundary(ns1, "Namespace1") {
+    KubernetesPod(pod1, "pod1", "")
+    KubernetesPvc(pvc1, "pvc1\nStorage:5Gb", "")
+    }
+  Namespace_Boundary(ns2, "Namespace2") {
+    KubernetesPod(pod2, "pod2", "")
+    KubernetesPvc(pvc2, "pvc2\nStorage:1Gb", "")
+    }
+
+  pod1 --> pvc1
+  pvc1 --> pv2
+  pod2 --> pvc2
+  pvc2 --> pv1
+  admin -u[#green]-> sc1
+  pv1 <-- sc1
+  pv2 <-- sc1
+  prog -[#green]> pvc1
+  prog -[#green]> pvc2
+}
+
+@enduml
