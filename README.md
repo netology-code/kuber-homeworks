@@ -23,9 +23,9 @@
 
 ### Блок "Применение Kubernetes"
 
-1. [Хранение в K8s. Часть 1]()
+1. [Хранение в K8s. Часть 1](https://github.com/netology-code/kuber-homeworks/blob/main/2.1/2.1.md)
 
-2. []()
+2. [Хранение в K8s. Часть 2](https://github.com/netology-code/kuber-homeworks/blob/main/2.2/2.2.md)
 
 3. []()
 
