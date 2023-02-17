@@ -1,0 +1,29 @@
+@startuml deployment
+
+footer 13.4
+scale max 1024 width
+
+skinparam nodesep 10
+skinparam ranksep 40
+
+!define KubernetesPuml https://raw.githubusercontent.com/dcasati/kubernetes-PlantUML/master/dist
+
+!includeurl KubernetesPuml/kubernetes_Common.puml
+!includeurl KubernetesPuml/kubernetes_Context.puml
+!includeurl KubernetesPuml/kubernetes_Simplified.puml
+
+!includeurl KubernetesPuml/OSS/KubernetesCrole.puml
+!includeurl KubernetesPuml/OSS/KubernetesRole.puml
+
+Cluster_Boundary(cluster, "Kubernetes Cluster") {
+  KubernetesCrole(crole1, "ClusterRole-1\nPermission-1\nPermission-2\nPermission-3", "")
+  KubernetesCrole(crole2, "ClusterRole-2\nPermission-4\nPermission-5\n", "")
+
+  Namespace_Boundary(ns1, "some-ns") {
+    KubernetesRole(role1, "Role-1\nPermission-1\nPermission-2\nPermission-3", "")
+    KubernetesRole(role2, "Role-2\nPermission-4\nPermission-5\n", "")
+    }
+}
+
+@enduml
+

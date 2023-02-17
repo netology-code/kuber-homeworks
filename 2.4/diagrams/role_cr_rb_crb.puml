@@ -1,0 +1,37 @@
+@startuml deployment
+
+footer 13.4
+scale max 1024 width
+
+skinparam nodesep 10
+skinparam ranksep 40
+
+!define KubernetesPuml https://raw.githubusercontent.com/dcasati/kubernetes-PlantUML/master/dist
+
+!includeurl KubernetesPuml/kubernetes_Common.puml
+!includeurl KubernetesPuml/kubernetes_Context.puml
+!includeurl KubernetesPuml/kubernetes_Simplified.puml
+
+!includeurl KubernetesPuml/OSS/KubernetesCrole.puml
+!includeurl KubernetesPuml/OSS/KubernetesRole.puml
+!includeurl KubernetesPuml/OSS/KubernetesCrb.puml
+!includeurl KubernetesPuml/OSS/KubernetesRb.puml
+
+Cluster_Boundary(cluster, "Kubernetes Cluster") {
+  KubernetesCrole(crole1, "ClusterRole-1\nPermission-1\nPermission-2\nPermission-3", "")
+  KubernetesCrole(crole2, "ClusterRole-2\nPermission-4\nPermission-5\n", "")
+  KubernetesCrb(crb1, "ClusterRoleBinding", " ")
+  KubernetesCrb(crb2, "ClusterRoleBinding", " ")
+
+  Namespace_Boundary(ns1, "some-ns") {
+    KubernetesRole(role1, "Role1\nPermission-1\nPermission-2\nPermission-3", "")
+    KubernetesRole(role2, "Role2\nPermission-4\nPermission-5\n", "")
+    KubernetesRb(rb1, "RoleBinding", "")
+    KubernetesRb(rb2, "RoleBinding", "")
+    }
+}
+crb1 --> crole1
+crb2 --> crole2
+rb1 --> role1
+rb2 --> role2
+@enduml
