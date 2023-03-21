@@ -1,0 +1,60 @@
+@startuml cluster-scheme
+
+footer 14.1
+scale max 1024 width
+
+skinparam nodesep 10
+skinparam ranksep 40
+
+!define KubernetesPuml https://raw.githubusercontent.com/dcasati/kubernetes-PlantUML/master/dist
+!define AzurePuml https://raw.githubusercontent.com/plantuml-stdlib/Azure-PlantUML/master/dist
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/AzureSimplified.puml
+!includeurl AzurePuml/Networking/AzureLoadBalancer.puml
+
+!includeurl KubernetesPuml/kubernetes_Common.puml
+!includeurl KubernetesPuml/kubernetes_Context.puml
+!includeurl KubernetesPuml/kubernetes_Simplified.puml
+
+!includeurl KubernetesPuml/OSS/KubernetesNode.puml
+!includeurl KubernetesPuml/OSS/KubernetesMaster.puml
+!includeurl KubernetesPuml/OSS/KubernetesApi.puml
+!includeurl KubernetesPuml/OSS/KubernetesEtcd.puml
+!includeurl KubernetesPuml/OSS/KubernetesSched.puml
+!includeurl KubernetesPuml/OSS/KubernetesCm.puml
+!includeurl KubernetesPuml/OSS/KubernetesCcm.puml
+!includeurl KubernetesPuml/OSS/KubernetesKubelet.puml
+!includeurl KubernetesPuml/OSS/KubernetesKproxy.puml
+
+left to right direction
+cloud cloud
+
+Cluster_Boundary(cluster, "Kubernetes Cluster") {
+  Node_Boundary(master_node, "Control plane") {
+    KubernetesApi(api, "API server","")
+    KubernetesEtcd(etcd, "etcd", "")
+    KubernetesSched(sched, "kube-scheduler", "")
+    KubernetesCm(cm, "kube-controller-manager", "")
+    KubernetesCcm(ccm, "cloud-controller-manager", "")
+    }
+  Node_Boundary(worker_node1, "Worker node") {
+    KubernetesKubelet(kubelet1, "kubelet","")
+    KubernetesKproxy(kproxy1, "kube-proxy","")
+    }
+  Node_Boundary(worker_node2, "Worker node") {
+    KubernetesKubelet(kubelet2, "kubelet","")
+    KubernetesKproxy(kproxy2, "kube-proxy","")
+    }
+}
+
+api <--> etcd
+api <--> sched
+api <--> cm
+api <--> ccm
+ccm <---> cloud
+api <-u-> kubelet1
+api <-u-> kubelet2
+api <-u-> kproxy1
+api <-u-> kproxy2
+
+@enduml
