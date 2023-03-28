@@ -1,0 +1,58 @@
+@startuml cluster-scheme
+
+footer 14.3
+scale max 1024 width
+
+skinparam nodesep 10
+skinparam ranksep 40
+
+!define KubernetesPuml https://raw.githubusercontent.com/dcasati/kubernetes-PlantUML/master/dist
+
+!includeurl KubernetesPuml/kubernetes_Common.puml
+!includeurl KubernetesPuml/kubernetes_Context.puml
+!includeurl KubernetesPuml/kubernetes_Simplified.puml
+
+!includeurl KubernetesPuml/OSS/KubernetesDeploy.puml
+!includeurl KubernetesPuml/OSS/KubernetesPod.puml
+!includeurl KubernetesPuml/OSS/KubernetesSvc.puml
+!includeurl KubernetesPuml/OSS/KubernetesDs.puml
+
+
+Cluster_Boundary(cluster, "Kubernetes Cluster") {
+KubernetesDeploy(coredns, "coredns","")
+KubernetesDs(nodelocaldns, "nodelocaldns","")
+KubernetesDs(autoscaler, "dns-autoscaler","")
+KubernetesSvc(corednssvc, "coredns","")
+
+  Node_Boundary(node1, "node") {
+    KubernetesPod(coredns1, "coredns","")
+    KubernetesPod(nodelocaldns1, "nodelocaldns","")
+    KubernetesPod(app1, "app1","")
+    }
+  Node_Boundary(node2, "node") {
+    KubernetesPod(coredns2, "coredns","")
+    KubernetesPod(nodelocaldns2, "nodelocaldns","")
+    KubernetesPod(app2, "app2","")
+    }
+  Node_Boundary(node3, "node") {
+    KubernetesPod(nodelocaldns3, "nodelocaldns","")
+    KubernetesPod(app3, "app3","")
+    }
+}
+
+  coredns .[#Red].> coredns1
+  coredns .[#Red].> coredns2
+  nodelocaldns .[#Blue].> nodelocaldns1
+  nodelocaldns .[#Blue].> nodelocaldns2
+  nodelocaldns .[#Blue].> nodelocaldns3
+  app1 -u-> nodelocaldns1
+  app2 -u-> nodelocaldns2
+  app3 -u-> nodelocaldns3
+  nodelocaldns1 --> corednssvc
+  nodelocaldns2 --> corednssvc
+  nodelocaldns3 --> corednssvc
+  coredns1 <-[#Green,thickness=4]-- corednssvc
+  coredns2 <-[#Green,thickness=4]-- corednssvc
+
+
+@enduml
