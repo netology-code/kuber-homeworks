@@ -22,8 +22,8 @@ left to right direction
 Cluster_Boundary(cluster, "Kubernetes Cluster") {
     KubernetesEp(ep_1, "endpoints\n10.244.1.11\n10.244.1.12\n10.244.1.13", "")
     KubernetesPod(pod_1, "pod-1\n10.244.1.11", "")
-    KubernetesPod(pod_2, "pod-2\n10.244.2.12", "")
-    KubernetesPod(pod_3, "pod-3\n10.244.3.13", "")
+    KubernetesPod(pod_2, "pod-2\n10.244.1.12", "")
+    KubernetesPod(pod_3, "pod-3\n10.244.1.13", "")
     KubernetesSvc(svc_main, "service\nmain\n10.128.1.10", "")
 
 note left
