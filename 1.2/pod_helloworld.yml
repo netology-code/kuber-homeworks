@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-helloworld
+spec:
+  containers:
+    - name: helloworld
+      image: https://gcr.io/kubernetes-e2e-test-images/echoserver:2.2
+      ports:
+        - containerPort: 12345
