@@ -4,7 +4,6 @@ metadata:
   name: multitool
   labels:
     app: multitool
-
 spec:
   containers:
     - name: multitool
