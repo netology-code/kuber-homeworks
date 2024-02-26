@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: multitool
+  name: multitool-pod
   labels:
-    name: multitool
+    name: multitool-pod
 spec:
   containers:
   - name: multitool

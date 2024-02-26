@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-mtool-app
-  namespace: lesson4
 spec:
   replicas: 3
   selector:
@@ -11,7 +10,7 @@ spec:
   template:
     metadata:
       labels:
-        app: nging-mtool
+        app: nginx-mtool
     spec:
       containers:
         - name: multitool
