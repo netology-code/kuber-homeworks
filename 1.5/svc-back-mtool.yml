@@ -7,4 +7,4 @@ spec:
     app: mtool-app
   ports:
     - name: mtool
-      port: 8080
+      port: 80
