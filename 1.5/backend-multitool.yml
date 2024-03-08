@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: multitool-back
@@ -14,13 +14,5 @@ spec:
       containers:
         - name: multitool
           image: wbitt/network-multitool
-          env:
-            - name: HTTP_PORT
-              value: "8080"
-            - name: HTTPS_PORT
-              value: "11443"
           ports:
             - containerPort: 8080
-              name: http-port
-            - containerPort: 11443
-              name: https-port
