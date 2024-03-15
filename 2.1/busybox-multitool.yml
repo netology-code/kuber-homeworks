@@ -1,20 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: busybox-mtool
+  name: busyboxmtool
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: busybox-mtool
+      app: boxmtool
   template:
     metadata:
       labels:
-        app: busybox-mtool
+        app: boxmtool
     spec:
       containers:
         - name: busybox
-          image: busybox:latest
+          image: busybox
+          command:
+            [
+              "/bin/sh",
+              "-c",
+              "while true; do date >> /share/date.txt; sleep 5; done",
+            ]
           volumeMounts:
             - name: share
               mountPath: /share
