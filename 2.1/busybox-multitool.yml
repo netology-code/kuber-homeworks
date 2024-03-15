@@ -7,23 +7,22 @@ spec:
   selector:
     matchLabels:
       app: busybox-mtool
-    template:
-      metadata:
-        labels:
-          app: busybox-mtool
-      spec:
-        containers:
+  template:
+    metadata:
+      labels:
+        app: busybox-mtool
+    spec:
+      containers:
         - name: busybox
-          image: busybox
-          command: ["/bin/sh", "-c", "while :; do sleep 5; do date >> /share/date.txt; done"]
+          image: busybox:latest
           volumeMounts:
-          - name: share
-            mountPath: /share
+            - name: share
+              mountPath: /share
         - name: multitool
-          image:  wbitt/network-multitool
+          image: wbitt/network-multitool
           volumeMounts:
-          - name: share
-            mountPath: /share
-        volumeMounts:
+            - name: share
+              mountPath: /share
+      volumes:
         - name: share
           emptyDir: {}
