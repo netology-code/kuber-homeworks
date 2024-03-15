@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busyboxmtool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: boxmtool
+  template:
+    metadata:
+      labels:
+        app: boxmtool
+    spec:
+      containers:
+        - name: busybox
+          image: busybox
+          command:
+            [
+              "/bin/sh",
+              "-c",
+              "while true; do date >> /share/date.txt; sleep 5; done",
+            ]
+          volumeMounts:
+            - name: share
+              mountPath: /share
+        - name: multitool
+          image: wbitt/network-multitool
+          volumeMounts:
+            - name: share
+              mountPath: /share
+      volumes:
+        - name: share
+          emptyDir: {}
